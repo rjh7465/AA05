@@ -1,0 +1,96 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<!-- Plotly.js -->
+	<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+	<h1>Data visualization by AA05</h1>
+	<hr>
+	<h2>Time series by AA05</h2>
+
+	<!-- Plotly chart will be drawn inside this DIV -->
+	<div id="myDiv" style="width: 700px;height: 500px"></div>
+	
+	<script>
+		<!-- JAVASCRIPT CODE GOES HERE -->
+
+		Plotly.d3.csv("data/AA05_iot99.csv", function(err, rows){
+
+			function unpack(rows, key) {
+				return rows.map(function(row) { return row[key]; });
+			}
+			var trace1 = {
+				type: "scatter",
+				mode: "lines",
+				name: 'Temp',
+				x: unpack(rows, 'date'),
+				y: unpack(rows, 'temperature'),
+				line: {color: '#17BECF'}
+			}
+
+			var trace2 = {
+				type: "scatter",
+				mode: "lines",
+				name: 'Humi',
+				x: unpack(rows, 'date'),
+				y: unpack(rows, 'humidity'),
+				line: {color: '#777F7F'}
+			}
+
+			var trace3 = {
+				type: "scatter",
+				mode: "lines",
+				name: 'Humi',
+				x: unpack(rows, 'date'),
+				y: unpack(rows, 'luminosity'),
+				line: {color: '#7F7F7F'}
+			}
+			
+			var data = [trace1,trace2,trace3];
+
+			var layout = {
+				title: 'IOT data with rangeslider',
+				xaxis: {
+					autorange: true,
+					range: ['2019-12-11  2:37:30','2019-12-11  2:50:38'],
+					rangeselector: {buttons: [
+						{
+							count: 1,
+							label: '1second',
+							step: 'second',
+							stepmode: 'backward'
+						},
+						{
+							count: 7,
+							label: '2second',
+							step: 'second',
+							stepmode: 'backward'
+						},
+						{
+							count: 1,
+							label: '3second',
+							step: 'second',
+							stepmode: 'backward'
+						},
+						{step: 'all'}
+						]},
+						rangeslider: {range: ['2019-12-11  2:37:30','2019-12-11  2:50:38']},
+						type: 'date'
+					},
+					yaxis: {
+						autorange: true,
+						range: [10, 400],
+						type: 'linear'
+					}
+				};
+
+
+				Plotly.newPlot('myDiv', data, layout);
+			})		
+
+		</script>
+
+	</body>
+</html>	
+
